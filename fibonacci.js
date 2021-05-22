@@ -2,7 +2,15 @@
 function main()
 {
  var num = parseInt(document.getElementById("num").value);
-serverFibonacci(num);
+ if (num>50){
+   alert("erro")
+ }
+  else if (document.getElementById("check").checked)
+    {serverFibonacci(num);
+  
+  generateList()
+  }
+  else { document.getElementById("answer").innerHTML=fibonacci(num);}
 }
 
 function fibonacci(x){
@@ -20,7 +28,44 @@ fetch (url, header)
     if (response.ok) return response.json()
     else return response.text()
       })
-  .then(data =>result.innerHTML= data.result? data.result:data)
+  .then((data) =>{
+    result.innerHTML= data.result? data.result:data
+  })
 
 
 }
+
+
+
+function generateList(){
+  const header = {method:"GET"}
+  const url="http://localhost:5050/getFibonacciResults"
+  let list;
+  fetch (url, header)
+    .then((response)=>{
+      if (response.ok) return response.json()
+      else return response.text()
+        })
+    .then((data) =>{
+      list=data.results;
+      document.getElementById("container").innerHTML="<li>itens da lista</li>"
+
+    for(let i=0;i<list.length;i++){
+    let newElement=document.createElement("li")
+    newElement.innerHTML=`the fibonacci of ${list[i].number} is ${list[i].result} at ${Date(list[i].createdDate)}`
+    document.getElementById("container").appendChild(newElement)
+    }
+    })
+  
+
+
+
+} 
+
+generateList();
+
+
+
+
+
+
